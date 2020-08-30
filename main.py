@@ -84,13 +84,13 @@ r = s.post(BALANCE_API, json=data, headers=headers)
 outstandingAmount, unbilledFees = [
     r.json(
     )["body"][k] for k in ('outstandingAmount', 'unbilledFees')]
-print(f"outstanding Amount: {outstandingAmount}")
-print(f"unbilled Amount: {unbilledFees}")
+print(f"outstanding Amount: {outstandingAmount} EGP")
+print(f"unbilled Amount: {unbilledFees} EGP")
 
 r = s.post(FREEUNITS_API, json=data, headers=headers)
 initialTotalAmount, usedAmount, freeAmount = [
     r.json(
     )["body"]["summarizedLineUsageList"][0][k] for k in ('initialTotalAmount', 'usedAmount', 'freeAmount')]
-print(f"Total Amount: {initialTotalAmount}")
-print(f"Used Amount: {usedAmount}")
-print(f"Free Amount: {freeAmount}")
+print(f"Total Amount: {initialTotalAmount} Gb")
+print(f"Used Amount: {usedAmount} Gb")
+print(f"Free Amount: {freeAmount} Gb")
