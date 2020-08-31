@@ -7,17 +7,27 @@ import pprint
 import requests
 from aes import AESCipher
 
+import getpass
+
+
 # API URI
 TOKEN_API = "https://api-my.te.eg/api/user/generatetoken?channelId=WEB_APP"
 SIGNIN_API = "https://api-my.te.eg/api/user/login?channelId=WEB_APP"
 BALANCE_API = "https://api-my.te.eg/api/line/postpaid/balance"
 FREEUNITS_API = "https://api-my.te.eg/api/line/freeunitusage"
 
-# Command line arguments
+# CLI parser
 parser = argparse.ArgumentParser(description="WE command line")
 parser.add_argument("msisdn")
-parser.add_argument("password")
 args = parser.parse_args()
+
+# Arguments
+msisdn = args.msisdn
+try:
+    password = getpass.getpass()
+except Exception as error:
+    print('ERROR', error)
+
 
 # Start requests session
 s = requests.Session()
@@ -42,10 +52,10 @@ iv = b"\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f"
 # AES implementation from
 # https://gist.github.com/wowkin2/a2b234c87290f6959c815d3c21336278
 
-password_enc = AESCipher(key, iv).encrypt(args.password)
+password_enc = AESCipher(key, iv).encrypt(password)
 data = {
     "header": {
-        "msisdn": args.msisdn,
+        "msisdn": msisdn,
         "locale": "En"
     },
     "body": {
@@ -74,7 +84,7 @@ headers = {
 data = {
     "header": {
         "customerId": customerId,
-        "msisdn": args.msisdn,
+        "msisdn": msisdn,
         "locale": "En"
     },
     "body": {}
